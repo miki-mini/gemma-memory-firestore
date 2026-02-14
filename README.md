@@ -1,90 +1,90 @@
-# Gemma Memory with Firestore (Miki's Partner Edition) 🍎
+# Gemma Memory with Firestore (Mikiの相棒エディション) 🍎
 
-Gemma (running locally via Ollama) remembers your conversations by storing them in Google Cloud Firestore.
-It features a "Smart Memory" system and a custom "Cute Partner" persona.
+ローカルのGemma (Ollama) が、Google Cloud Firestoreを使って会話の記憶を保持します。
+「スマート記憶システム」と「かわいい相棒」設定が特徴です。
 
-## ✨ Features
+## ✨ 特徴
 
-- **🧠 Cloud Persistence**: Conversation history is saved in Firestore, so Gemma remembers you even after restarting the computer.
-- **⚡ Smart Memory Management**:
-    - **Short-term Memory**: Keeps the exact last **20 messages** for immediate context.
-    - **Long-term Memory (Auto-Summary)**: Automatically summarizes older conversations and stores them as "Long-term Memory", allowing for infinite context without slowing down.
-- **💖 Custom Persona**:
-    - Modeled as **"Miki's energetic and cute partner"**.
-    - Speaks in casual Japanese ("だよ！", "ね！") with plenty of emojis (😊✨).
-    - **Strictly Japanese**: Configured to avoid switching to English.
-- **🏗️ Infrastructure as Code**: Firestore resources are managed via **Terraform**.
+- **🧠 クラウド保存**: 会話履歴がFirestoreに保存されるため、PCを再起動してもGemmaはあなたを覚えています。
+- **⚡ スマート記憶管理**:
+    - **短期記憶**: 直近の **20件** のメッセージをそのまま保持し、文脈を維持します。
+    - **長期記憶 (自動要約)**: 古い会話を自動的に要約して「長期記憶」として保存します。これにより、動作を重くすることなく、無限の文脈を持たせることができます。
+- **💖 カスタム人格**:
+    - **「Mikiの元気でかわいい相棒」** として振る舞います。
+    - 「だよ！」「ね！」などのタメ口と、たくさんの絵文字 (😊✨) を使います。
+    - **完全日本語**: 英語混じりにならないよう厳密に調整されています。
+- **🏗️ インフラのコード化**: Firestoreのリソースは **Terraform** で管理されています。
 
-## 🚀 Prerequisites
+## 🚀 前提条件
 
-- **Ollama**: Installed and running locally.
-    - Model: `gemma3:4b` (will be customized to `gemma-friend`)
+- **Ollama**: ローカルにインストールされ、起動していること。
+    - モデル: `gemma3:4b` (これをベースに `gemma-friend` を作成します)
 - **Google Cloud Platform (GCP)**:
-    - A project with billing enabled.
-    - `gcloud` CLI installed and authenticated.
-- **Python**: 3.8+
-- **Terraform**: For infrastructure setup.
+    - 課金 (Billing) が有効なプロジェクト。
+    - `gcloud` CLI がインストールされ、認証済みであること。
+- **Python**: 3.8以上
+- **Terraform**: インフラ構築用。
 
-## 🛠️ Setup
+## 🛠️ セットアップ
 
-### 1. Infrastructure (Terraform)
-Navigate to the `terraform` directory and apply the configuration.
+### 1. インフラ構築 (Terraform)
+`terraform` ディレクトリに移動し、設定を適用します。
 
 ```bash
 cd terraform
-# Edit/Create terraform.tfvars with your GCP Project ID
+# terraform.tfvars を作成/編集して、GCPプロジェクトIDを設定してください
 # project_id = "your-project-id"
 
 terraform init
 terraform apply
 ```
 
-This will enable the Firestore API and create a Native Firestore database.
+これでFirestore APIが有効化され、データベースが作成されます。
 
-### 2. Python Environment
-Install the required dependencies.
+### 2. Python環境
+必要な依存ライブラリをインストールします。
 
 ```bash
 cd ..
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the root directory:
+ルートディレクトリに `.env` ファイルを作成します:
 ```env
 GCP_PROJECT_ID=your-project-id
 ```
 
-### 3. Create Custom Model
-Create the custom `gemma-friend` model from the `Modelfile`.
+### 3. カスタムモデルの作成
+`Modelfile` からカスタムモデル `gemma-friend` を作成します。
 
 ```bash
 ollama create gemma-friend -f Modelfile
 ```
 
-## 💬 Usage
+## 💬 使い方
 
-Start the chat interface:
+チャットを開始します:
 
 ```bash
 python gemma_chat.py
 ```
 
-- **Chat**: Type your message and press Enter.
-- **Reset Memory**: Type `reset` to clear all conversation history and start fresh.
-- **Exit**: Type `exit` or `quit`.
+- **チャット**: メッセージを入力してEnterキーを押します。
+- **記憶リセット**: `reset` と入力すると、すべての会話履歴と要約が消去され、最初からになります。
+- **終了**: `exit` または `quit` と入力します。
 
-## 📁 Project Structure
+## 📁 プロジェクト構成
 
 ```
 .
-├── gemma_chat.py        # Main Python script for chat & memory logic
-├── Modelfile            # Custom model definition (Persona settings)
-├── terraform/           # Infrastructure as Code
+├── gemma_chat.py        # チャットと記憶ロジックのメインスクリプト
+├── Modelfile            # カスタムモデル定義 (人格設定)
+├── terraform/           # インフラ構成コード (IaC)
 │   ├── main.tf
 │   ├── variables.tf
 │   └── ...
-└── requirements.txt     # Python dependencies
+└── requirements.txt     # Python依存ライブラリ
 ```
 
-## 📝 License
+## 📝 ライセンス
 MIT
