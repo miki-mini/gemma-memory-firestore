@@ -3,6 +3,8 @@
 ローカルのGemma (Ollama) が、Google Cloud Firestoreを使って会話の記憶を保持します。
 「スマート記憶システム」と「かわいい相棒」設定が特徴です。
 
+![Demo](image/093007.png)
+
 ## ✨ 特徴
 
 - **🧠 クラウド保存**: 会話履歴がFirestoreに保存されるため、PCを再起動してもGemmaはあなたを覚えています。
@@ -54,11 +56,35 @@ pip install -r requirements.txt
 GCP_PROJECT_ID=your-project-id
 ```
 
-### 3. カスタムモデルの作成
-`Modelfile` からカスタムモデル `gemma-friend` を作成します。
+### 3. カスタムモデルの作成（初心者向けガイド）
+
+**① Modelfileを作る**
+メモ帳などで `Modelfile` という名前のファイルを作ります。
+
+**② 催眠術を書く**
+中身に以下の2行を書くだけ！（難しいテンプレートは自動で読み込まれます）
+
+```dockerfile
+FROM gemma3:4b
+
+# ここに設定を書くだけ！
+SYSTEM "あなたはMikiの相棒です。タメ口で、元気よく話してください。"
+```
+
+**③ 調理する（create）**
+以下のコマンドを唱えて、AIを作成します。
 
 ```bash
 ollama create gemma-friend -f Modelfile
+```
+
+（訳：Modelfileというレシピを使って、gemma-friendというAIを作れ！）
+
+**④ 召喚する（run）**
+作ったAIを呼び出します。
+
+```bash
+ollama run gemma-friend
 ```
 
 ## 💬 使い方
